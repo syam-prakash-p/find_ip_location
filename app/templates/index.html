@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<h1> ChecK YOur IP LocaTion </h1>
+
+<form action="{{ url_for("home")}}" method="post">
+<label for="ip">IP ADDRESS:</label>
+<input type="text" id="ip" name="ip_addr" placeholder="ip address">
+<button type="submit">Check</button>
