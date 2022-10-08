@@ -1,2 +1,6 @@
 app/venv
 app/.idea
+app/tesy.py
+app/run.py
+
+
