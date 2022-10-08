@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 def redis_connect():
     try:
-        rc = redis.Redis(host='localhost',port=6379,db=0)
+        rc = redis.Redis(host=os.getenv('REDIS_HOST'),port=os.getenv('REDIS_PORT'),db=0)
         return rc
     except Exception as e:
         print(e)
