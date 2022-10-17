@@ -17,12 +17,12 @@ app = Flask(__name__)
 def redis_connect():
     try:
         rc = redis.Redis(host=os.getenv('REDIS_HOST'),port=os.getenv('REDIS_PORT'),db=0)
+        rc.ping()
         return rc
     except Exception as e:
         print(e)
         return None
 rc = redis_connect()
-
 
 
 
@@ -36,16 +36,18 @@ def get_ip_data(ip):
         else:
             if rc:
                 result=rc.get(ip)
+                if result is None:
+                  result=requests.get(api_url%(ip))
+                  data=result.json()
+                  rc.set(ip,result.text)
+                else:
+                  data=json.loads(result)
             else:
-                result = None
-            if result is None:
                 result=requests.get(api_url%(ip))
                 data=result.json()
-                rc.set(ip,result.text)
-            else:
-                data=json.loads(result)
             return render_template("result.html",result=data)
     except Exception as e:
+        print(e)
         return render_template('out.html',result=e)
 
 
