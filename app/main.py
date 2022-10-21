@@ -18,6 +18,7 @@ def redis_connect():
     try:
         rc = redis.Redis(host=os.getenv('REDIS_HOST'),port=os.getenv('REDIS_PORT'),db=0)
         rc.ping()
+        print("redis connected")
         return rc
     except Exception as e:
         print(e)
@@ -40,11 +41,15 @@ def get_ip_data(ip):
                   result=requests.get(api_url%(ip))
                   data=result.json()
                   rc.set(ip,result.text)
+                  cache={"cached": "false"}
                 else:
                   data=json.loads(result)
+                  cache={"cached": "true"}
             else:
                 result=requests.get(api_url%(ip))
                 data=result.json()
+                cache={"cached": "false"}
+            data.update(cache)
             return render_template("result.html",result=data)
     except Exception as e:
         print(e)
